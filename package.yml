@@ -1,0 +1,23 @@
+
+package: MocoTrello
+version: '1.0.0'
+author: Christian Gehrke
+
+# Seiten
+page:
+    title: 'MocoTrello'
+    block: system
+    subpages:
+        moco:
+            { title: 'MOCO', icon: rex-icon fa-laptop }
+        trello:
+            { title: 'Trello', icon: rex-icon fa-stack-overflow }
+        sync:
+            { title: 'Synchronisation', icon: rex-icon fa-info-circle }
+        help:
+            { title: 'Hilfe' }
+# Abhängigkeiten
+# Anforderungen ans System oder anderere AddOns, um dieses AddOn installieren oder update zu können
+requires:
+    redaxo: '^5.5' # benötigt mindestens REDAXO 5.5
+    php:

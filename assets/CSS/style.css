@@ -1,0 +1,169 @@
+    /* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+    body {
+        font-family: "Hind";
+        font-size: 14px;
+    }
+    .sitewrapper {
+        width: 100%;
+        height: auto;
+        position: relative;
+        background: white;
+      /*  background: -moz-radial-gradient(center, ellipse cover, #6db3f2 0%, #54a3ee 35%, #3690f0 60%, #1e69de 100%); 
+        background: -webkit-radial-gradient(center, ellipse cover, #6db3f2 0%,#54a3ee 35%,#3690f0 60%,#1e69de 100%); 
+        background: radial-gradient(ellipse at center, #6db3f2 0%,#54a3ee 35%,#3690f0 60%,#1e69de 100%); 
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', endColorstr='#1e69de',GradientType=1 ); 
+   */ }
+    .header_logo {
+        margin: 0;
+        padding: 0;
+        display: block;
+        width: 20%;
+/*         height: 100px; */
+    }
+    .logo {
+        width: 100%;
+        height: 100%;
+    }
+    .contentwrapper {
+        width: 60%;
+        background: #343a40;
+        box-shadow: 8px 8px 15px #222;
+        display: block;
+        text-align: center;
+        margin: 0 auto;
+/*         margin-top: 7%; */
+    }
+
+    .synch_button {
+        outline: none;
+        margin: 10px;
+        background: white;
+        border-radius: 50%;
+        border: 6px solid #FFF;
+        letter-spacing:1px; 
+        padding: 60px 0px;
+        width: 150px;
+        background: #0097d7; /* Old browsers */
+        background: -moz-radial-gradient(center, ellipse cover, #0097d7 0%, #1Eb9FB 35%, #3690f0 60%, #1e69de 100%); /* FF3.6-15 */
+        background: -webkit-radial-gradient(center, ellipse cover, #0097d7 0%,#1Eb9FB 35%,#3690f0 60%,#1e69de 100%); /* Chrome10-25,Safari5.1-6 */
+        background: radial-gradient(ellipse at center, #0097d7 0%,#1Eb9FB 35%,#3690f0 60%,#1e69de 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        font-weight: 600;
+        color: white;
+        font-size: 1.1em;
+        text-shadow: 0px 0px 15px #0097d7;
+        cursor: pointer;
+        box-shadow: 1px 5px 10px #222, 0px 0px 0px transparent inset;
+        transition: all 1s, box-shadow .5s;
+    }
+    .synch_button:hover {
+        box-shadow: 0px 0px 10px #222, 160px 160px 0 rgba(255,11,11,0.8) inset;
+        text-shadow: 0px 0px 0px #6db3f2;
+        transition: all .2s, box-shadow .8s;  
+    } 
+    .submit_button {
+        cursor: pointer;
+        margin: 20px;
+        padding: 15px 25px;
+        color: white;
+        border-radius: 5px;
+        font-size: 1.1em;
+        letter-spacing: .1em;
+        font-weight: 450;
+        background: #6db3f2; /* Old browsers */
+        background: -moz-radial-gradient(center, ellipse cover, #6db3f2 0%, #54a3ee 35%, #3690f0 60%, #1e69de 100%); /* FF3.6-15 */
+        background: -webkit-radial-gradient(center, ellipse cover, #6db3f2 0%,#54a3ee 35%,#3690f0 60%,#1e69de 100%); /* Chrome10-25,Safari5.1-6 */
+        background: radial-gradient(ellipse at center, #6db3f2 0%,#54a3ee 35%,#3690f0 60%,#1e69de 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        border: none;
+        box-shadow: 0px 0px 15px #fff inset, 5px 5px 18px #222;
+    }
+    .formwrapper {
+        display: inline-block;
+        margin: 10px 10px;
+    }
+    .inputFieldWrapper {
+        padding: 5px;
+        display: table;
+        width: 100%;
+    }
+    h1 {
+        font-size: 2em;
+        padding: 15px;
+        color: #3690f0;
+        text-shadow: 0px 0px 55px #f4f4f4;
+    }
+    h2 {
+        font-size: 1.6em;
+        padding: 10px;
+        color: #0097d7;
+    }    
+    .inputName {
+        display: table-cell;
+        text-align: center;
+        font-size: 1.3em;
+        color: white;
+        width: 25%;
+    }
+    .trenner {
+        padding: 50px;
+    }
+    .trenner2 {
+        padding: 100px;
+    }
+    .inputField {
+        margin: 0 auto;
+        width: 80%;
+        font-size: 16px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        display: table-cell;
+        box-sizing: content-box;
+        padding: 10px 10px;
+        box-shadow: 1px 1px 8px #444 inset;
+    }
