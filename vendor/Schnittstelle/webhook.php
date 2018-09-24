@@ -6,7 +6,7 @@ include_once 'functions.php';
 $api = new MocoSyncTrello();
 $body = json_decode(file_get_contents("php://input"),FALSE);
 $output = $body->action;
-file_put_contents("Test.txt", print_r($body,true),FILE_APPEND);
+
 /* informations for sync */
 $cardId = $body->action->data->card->id;
 $functionType = $body->action->type;
@@ -33,12 +33,27 @@ $checkOldName = $body->action->data->old;
 $boolCheckOldName = array_key_exists('name',$checkOldName);
 $oldName = $body->action->data->old->name;
 $newName = $body->action->data->card->name;
-
 /* archivestatus of projectcards */
 $archivedIdentifier = $body->action->data->old->closed;
 $closed = $body->action->data->card->closed;
 
 /* if functionType is updateCard/commentCard */
+if($functionType == 'createCard') {
+    $sql = rex_sql::factory();
+    $mocoAppData = $sql->setQuery('SELECT * from rex_synchronisation');
+    $mocoAppData = $mocoAppData->getArray();
+    /* go through the projects */
+    $checkExist = false;
+	foreach($mocoAppData as $mocoData) {
+        $checkExist = $api->checkProjectExists($mocoData,$name);
+        if($checkExist == true) {
+            break;
+        }
+    }
+    if($checkExist == false) {
+            $api->deleteTrelloCard($cardId);
+    }
+}
 if($functionType == 'updateCard' || $functionType == 'commentCard') {
     /* get all existing projects from moco */
     $sql = rex_sql::factory();
@@ -49,8 +64,9 @@ if($functionType == 'updateCard' || $functionType == 'commentCard') {
 		$mocoArchiveStatus = $mocoData['active'];
 		$identifier = stristr($name,$mocoData['identifier']);
 
+        $oldIdentifier = stristr($oldName,$mocoData['identifier']);
         /* if changed Trello-Project exists in MOCO */
-		if($identifier == $mocoData['identifier']) {
+        if($oldIdentifier == $mocoData['identifier']) {
 
             /* Check if name has been changed */
             if($boolCheckOldName == TRUE) {
@@ -61,7 +77,8 @@ if($functionType == 'updateCard' || $functionType == 'commentCard') {
                     $api->reviseTrelloProjectName($cardId,$oldName);
                 }
 		    }
-
+        }
+		if($identifier == $mocoData['identifier']) {
             /* Determining the ID of the Moco project that was changed in Trello */
 			$changeMocoDataID = $api->getMocoAppIdFromTrelloDB($mocoData,$cardName);
 			if($changeMocoDataID != NULL) {

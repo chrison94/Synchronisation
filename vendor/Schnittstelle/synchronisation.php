@@ -39,7 +39,6 @@ $trelloArrayExistingLabels = array_merge($trelloExistingLabels, $trelloExistingE
 /* step 5 algorithm, for each data in $mocoData do -> algorithm */
 foreach ($mocoAppData as $mocoData) {
 	$mocoActive = $mocoData['active'];
-
 	$mocoCustomerData = $mocoData['customer'];
 	$mocoCustomer = $mocoCustomerData['name'];
 

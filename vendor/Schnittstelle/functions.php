@@ -5,10 +5,9 @@ include_once 'trello/functions.php';
 
 class MocoSyncTrello {
 
-    public $id;
-
-    function __construct($id = null) {
+    function __construct($id = null, $firstname = null) {
         $this->id = $id;
+        $this->firstname = $firstname;
     }
 
       /****************************/
@@ -109,22 +108,22 @@ class MocoSyncTrello {
 	}
 
 	function getTrelloData() {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->getTrelloData();
 	}
 
     function getTrelloLabels() {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->getTrelloLabels();
 	}
 
 	function getTrelloListData() {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->getTrelloListData();
 	}
 
     function getTrelloArchivedData() {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->getTrelloArchivedData();
 	}
 
@@ -138,12 +137,12 @@ class MocoSyncTrello {
 	}
 
 	function createNewTrelloLabels($newCustomerData) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->createNewTrelloLabels($newCustomerData);
 	}
 
 	function sendNewTrelloCard($name, $labelID, $memberID, $info, $listID, $moco_project_name, $customs , $leader, $moco_id, $identifier, $moco_active, $customer_name) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->sendNewTrelloCard($name, $labelID, $memberID, $info, $listID, $moco_project_name, $customs , $leader, $moco_id, $identifier, $moco_active, $customer_name);
 	}
 
@@ -168,29 +167,38 @@ class MocoSyncTrello {
 	}
 
 	function archiveTrelloCards($id, $identifier) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->archiveTrelloCards($id, $identifier);
 	}
 
 	function unarchiveTrelloCard($identifier) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->unarchiveTrelloCard($identifier);
 	}
 
 	function reviseTrelloProjectName($changeMocoDataID,$oldName) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->reviseTrelloProjectName($changeMocoDataID,$oldName);
 	}
 
     function sendMocoToTrello($name, $labelID, $info, $listID, $cardID, $moco_project_name, $moco_info, $customs , $leader, $moco_id, $identifier, $moco_active, $customer_name) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return 	$trello->sendMocoToTrello($name, $labelID, $info, $listID, $cardID, $moco_project_name, $moco_info, $customs , $leader, $moco_id, $identifier, $moco_active, $customer_name);
 	}
 
 	function reviseArchiveTrelloCards($cardId) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->reviseArchiveTrelloCards($cardId);
 	}
+
+      /************************************/
+     /* to send data to APIs with DELETE */
+    /************************************/
+
+    function deleteTrelloCard($id) {
+        $trello = new trelloFunctions($this->id, $this->firstname);
+        return $trello->deleteTrelloCard($id);
+    }
 
       /*********************************/
      /* Functions for evaluating data */
@@ -205,7 +213,7 @@ class MocoSyncTrello {
 		$moco = new mocoFunctions();
 		return $moco->getMocoAppIdFromTrello($mocoData,$cardName);
 	}
-    
+
     function getMocoAppIdFromTrelloDB($mocoData,$cardName) {
 		$moco = new mocoFunctions();
 		return $moco->getMocoAppIdFromTrelloDB($mocoData,$cardName);
@@ -217,62 +225,62 @@ class MocoSyncTrello {
     }
 
     function getTrelloArchiveStatus($mocoData,$trelloData) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->getTrelloArchiveStatus($mocoData,$trelloData);
 	}
 
     function checkTrelloProjectExists($mocoData,$trelloData) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->checkTrelloProjectExists($mocoData,$trelloData);
 	}
 
     function setTrelloLabel($trelloArrayExistingLabels,$mocoData) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->setTrelloLabel($trelloArrayExistingLabels,$mocoData);
 	}
 
 	function changeTrelloName($mocoData,$trelloData) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->changeTrelloName($mocoData,$trelloData);
 	}
 
     function findTrelloProject($mocoData, $trelloData) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->findTrelloProject($mocoData, $trelloData);
 	}
 
     function checkDescriptionChange($mocoData,$trelloData) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->checkDescriptionChange($mocoData,$trelloData);
 	}
 
 	function checkCompanyChange($mocoData,$trelloData) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->checkCompanyChange($mocoData,$trelloData);
 	}
 
 	function checkStatusChange($mocoData,$trelloData) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->checkStatusChange($mocoData,$trelloData);
 	}
 
 	function getTrelloCardId($mocoData,$trelloData) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->getTrelloCardId($mocoData,$trelloData);
 	}
 
   	function getTrelloCardIdArchive($mocoData,$trelloData) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->getTrelloCardIdArchive($mocoData,$trelloData);
 	}
 
 	function getTrelloListId($status) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->getTrelloListId($status);
 	}
 
 	function checkIsArchived($identifier,$trelloData) {
-		$trello = new trelloFunctions($this->id);
+		$trello = new trelloFunctions($this->id, $this->firstname);
 		return $trello->checkIsArchived($identifier,$trelloData);
 	}
 

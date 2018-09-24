@@ -9,13 +9,13 @@ $addon = rex_addon::get('MocoTrello');
 include_once 'functions.php';
 $mocoData = json_decode(file_get_contents("php://input"),TRUE);
 
-include_once 'functions.php';
-
+$firstname = $mocoData['leader'];
+$firstname = $firstname['firstname'];
 
 /* init boards with ID and init MOCO-object */
 $moco = new MocoSyncTrello();
-$board = new MocoSyncTrello($addon->getConfig('regelBoard'));
-$esperantoBoard = new MocoSyncTrello($addon->getConfig('esperantoBoard'));
+$board = new MocoSyncTrello($addon->getConfig('regelBoard'),$firstname);
+$esperantoBoard = new MocoSyncTrello($addon->getConfig('esperantoBoard'),$firstname);
 /* step 1 get moco data */
 
 
