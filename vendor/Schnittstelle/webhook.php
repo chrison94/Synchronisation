@@ -7,6 +7,10 @@ include_once 'functions.php';
 $api = new MocoSyncTrello();
 $body = json_decode(file_get_contents("php://input"),FALSE);
 $output = $body->action;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5e4b9a086dfcb70271b886adb445d1c3d59d2935
 /* informations for sync */
 $cardId = $body->action->data->card->id;
 $functionType = $body->action->type;
@@ -53,10 +57,14 @@ if($functionType == 'createCard') {
         }
     }
     if($checkExist == false) {
+<<<<<<< HEAD
         $api->deleteTrelloCard($cardId);
     }
     if($checkExist == true) {
         $api->sendTrelloCardID($mocoAppData,$cardId,$name);
+=======
+            $api->deleteTrelloCard($cardId);
+>>>>>>> 5e4b9a086dfcb70271b886adb445d1c3d59d2935
     }
 }
 if($functionType == 'updateCard' || $functionType == 'commentCard') {
