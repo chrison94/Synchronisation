@@ -5,6 +5,9 @@
             $addon = rex_addon::get('MocoTrello');
             $this->mocoKey = $addon->getConfig('moco_key');
             $this->sitename = $addon->getConfig('moco_workspace');
+            $this->trelloKey = $addon->getConfig('trello_key');
+            $this->trelloToken = $addon->getConfig('trello_token');
+            $this->syncOK = $addon->getConfig('syncOK');
         }
       /*****************************/
      /* to receive data from APIs */
@@ -66,7 +69,7 @@
 
     	function updateCustomPropertiesInMoco($changeMocoDataID,$list) {
     		$urlpM =  'https://'.$this->sitename.'.mocoapp.com/api/v1/projects/'.$changeMocoDataID;
-    		$send = 'custom_properties[Synchronisation]=0&custom_properties[Status]='.$list;
+    		$send = 'custom_properties[Status]='.$list;
     		$chpM = curl_init();
     		curl_setopt($chpM, CURLOPT_URL, $urlpM);
     		curl_setopt($chpM, CURLOPT_CUSTOMREQUEST, "PUT");
@@ -78,9 +81,7 @@
     	}
 
     	function updateStatusInMoco($changeMocoDataID,$listAfter,$mocoData) {
-            $intern = rawurlencode($mocoData['Intern']);
-    		$send ='custom_properties[Status]='.$listAfter.'&custom_properties[Intern]='.$intern;
-            file_put_contents("Test.txt", print_r('JAAAJAAAA',true));
+    		$send ='custom_properties[Status]='.$listAfter;
     		$urlpM =  'https://'.$this->sitename.'.mocoapp.com/api/v1/projects/'.$changeMocoDataID;
             $sql = rex_sql::factory();
             $sql->setQuery('UPDATE rex_synchronisation SET Status = "'.$listAfter.'" WHERE  moco_id = "'.$changeMocoDataID.'"');
@@ -92,9 +93,10 @@
     		curl_setopt($chpM, CURLOPT_POSTFIELDS,$send);
     		curl_exec($chpM);
     		curl_close($chpM);
+
     	}
 
-    	function updateInfoInMoco($changeMocoDataID,$infoAfter) {
+    	function updateInfoInMoco($changeMocoDataID,$infoAfter,$mocoData) {
     		$send = 'info='.rawurlencode($infoAfter);
     		$urlpM =  'https://'.$this->sitename.'.mocoapp.com/api/v1/projects/'.$changeMocoDataID;
             $sql = rex_sql::factory();
@@ -105,9 +107,15 @@
     		curl_setopt($chpM, CURLOPT_HTTPHEADER,array('Content-Type: application/x-www-form-urlencoded'));
     		curl_setopt($chpM, CURLOPT_HTTPHEADER,array('Authorization: Token token='.$this->mocoKey));
     		curl_setopt($chpM, CURLOPT_POSTFIELDS,$send);
-    		curl_exec($chpM);
-    		curl_close($chpM);
-    	}
+            curl_setopt($chpM, CURLOPT_RETURNTRANSFER, true);
+    		$pM = curl_exec($chpM);
+            curl_close($chpM);
+            $jsonpM = json_decode($pM, true);
+            if(!empty($jsonpM)) {
+                $this->checkInfo($infoAfter,$jsonpM['info'],$mocoData);
+            }
+            return $jsonpM;
+        }
 
       /*********************************/
      /* Functions for evaluating data */
@@ -157,6 +165,35 @@
             curl_close($chgM);
             $jsongM = json_decode($VARIABLEgM, true);
             return $jsongM;
+        }
+
+        function checkInfo($infoAfter,$mocoInfo,$mocoData) {
+            if($infoAfter == $mocoInfo) {
+                $this->sendSyncOK($mocoData['identifier']);
+            }
+            else {
+            file_put_contents("Test.txt", print_r("No",true),FILE_APPEND);
+            }
+        }
+
+        function sendSyncOK($identifier) {
+            $sql = rex_sql::factory();
+            $mocoAppData = $sql->setQuery('SELECT * from rex_synchronisation');
+            $mocoAppData = $mocoAppData->getArray();
+
+          /*  foreach($mocoAppData as $data) {
+                if($data['identifier'] == $identifier) {
+                    $urlT = 'https://api.trello.com/1/cards/'.$data["trello_cardId"].'?idLabels=5b9f8c7fafa89e79435d467b&key='.$this->trelloKey.'&token='.$this->trelloToken;
+
+                    $chT = curl_init();
+                    curl_setopt($chT, CURLOPT_URL, $urlT);
+					curl_setopt($chT, CURLOPT_CUSTOMREQUEST, "PUT");
+			    	curl_setopt($chT, CURLOPT_HEADER, false);
+					curl_setopt($chT, CURLOPT_RETURNTRANSFER, true);
+                    curl_exec($chT);
+                    curl_close($chT);
+                }
+            }*/
         }
     }
 ?>

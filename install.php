@@ -9,7 +9,7 @@ rex_sql_table::get(rex::getTable('synchronisation'))
     ->ensureColumn(new rex_sql_column('customer', 'VARCHAR(255)', true))
     ->ensureColumn(new rex_sql_column('user_id', 'INTEGER', true))
     ->ensureColumn(new rex_sql_column('moco_id', 'INTEGER', true))
-    ->ensureColumn(new rex_sql_column('Intern', 'TEXT', true))
+    ->ensureColumn(new rex_sql_column('trello_cardId', 'VARCHAR(255)', true))
     ->ensure();
 
 if (!$this->hasConfig()) {

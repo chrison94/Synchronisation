@@ -1,11 +1,23 @@
 <?php
 	class trelloFunctions {
 
-        function __construct($id = null) {
+        function __construct($id = null, $firstname = null) {
             $this->boardID = $id;
             $addon = rex_addon::get('MocoTrello');
-            $this->trelloKey = $addon->getConfig('trello_key');
-            $this->trelloToken = $addon->getConfig('trello_token');
+            $this->mocoWorkerName = $addon->getConfig('moco_worker_moco_name');
+            $this->mocoCoWorkerName = $addon->getConfig('moco_co_worker_moco_name');
+            if($firstname == $this->mocoWorkerName) {
+                $this->trelloKey = $addon->getConfig('trello_key');
+                $this->trelloToken = $addon->getConfig('trello_token');
+            }
+            if($firstname == $this->mocoCoWorkerName) {
+                $this->trelloKey = $addon->getConfig('trello_key_co');
+                $this->trelloToken = $addon->getConfig('trello_token_co');
+            }
+            if($firstname == null) {
+                $this->trelloKey = $addon->getConfig('trello_key');
+                $this->trelloToken = $addon->getConfig('trello_token');
+            }
         }
 
       /*****************************/
@@ -69,23 +81,18 @@
     /**********************************/
 
         function createNewTrelloLabels($newCustomerData) {
-            foreach($newCustomerData as $data) {
-                if($data != '') {
-                    $name = rawurlencode($data);
-					$urlT = 'https://api.trello.com/1/labels?name='.$name.'&color=black&idBoard='.$this->boardID.'&key='.$this->trelloKey.'&token='.$this->trelloToken;                    
-					$chT = curl_init();
-					curl_setopt($chT, CURLOPT_URL, $urlT);
-					curl_setopt($chT, CURLOPT_POST, TRUE);
-					curl_setopt($chT, CURLOPT_RETURNTRANSFER, true);
-					curl_exec($chT);
-					curl_close($chT);
-                }
-            }
+            $name = rawurlencode($newCustomerData);
+			$urlT = 'https://api.trello.com/1/labels?name='.$name.'&color=black&idBoard='.$this->boardID.'&key='.$this->trelloKey.'&token='.$this->trelloToken;
+			$chT = curl_init();
+			curl_setopt($chT, CURLOPT_URL, $urlT);
+			curl_setopt($chT, CURLOPT_POST, TRUE);
+			curl_setopt($chT, CURLOPT_RETURNTRANSFER, true);
+			curl_exec($chT);
+			curl_close($chT);
 		}
 
         function sendNewTrelloCard($name, $labelID, $memberID, $info, $listID, $moco_project_name, $customs , $leader, $moco_id, $identifier, $moco_active, $customer_name) {
-            $sql = rex_sql::factory();
-            $sql->setQuery('INSERT INTO rex_synchronisation (`identifier`,`name`,`info`,`active`,`Status`,`customer`,`user_id`,`moco_id`,`Intern`) VALUES("'.$identifier.'","'.$moco_project_name.'","'.$info.'","'.$moco_active.'","'.$customs["Status"].'","'.$customer_name["name"].'","'.$leader["id"].'","'.$moco_id.'","'.$customs["Intern"].'")');
+            $this->sendToDatabase($moco_project_name, $customs , $leader, $moco_id, $identifier, $moco_active, $customer_name);
 			$name = rawurlencode($name);
 			$info = rawurlencode($info);
 			$labelID = rawurlencode($labelID);
@@ -98,7 +105,15 @@
 			curl_exec($chT);
 			curl_close($chT);
 		}
-
+        function sendTrelloCardID($mocoData,$cardId,$name) {
+            foreach($mocoData as $data) {
+                $identifier = stristr($name,$data['identifier']);
+                if($data['identifier'] == $identifier) {
+                   $sql = rex_sql::factory();
+                   $sql->setQuery('UPDATE rex_synchronisation SET trello_cardId = "'.$cardId.'" WHERE identifier = "'.$identifier.'"');
+                }
+            }
+        }
       /*********************************/
      /* to send data to APIs with PUT */
     /*********************************/
@@ -179,6 +194,20 @@
 			curl_exec($chT);
 			curl_close($chT);
 		}
+
+      /************************************/
+     /* to send data to APIs with DELETE */
+    /************************************/
+
+    function deleteTrelloCard($id) {
+			$urlT = 'https://api.trello.com/1/cards/'.$id.'?key='.$this->trelloKey.'&token='.$this->trelloToken;
+			$chT = curl_init();
+			curl_setopt($chT, CURLOPT_URL, $urlT);
+			curl_setopt($chT, CURLOPT_CUSTOMREQUEST, "DELETE");
+			curl_setopt($chT, CURLOPT_HEADER, false);
+			curl_exec($chT);
+			curl_close($chT);
+    }
 
       /*********************************/
      /* Functions for evaluating data */
@@ -312,6 +341,26 @@
 				}
 			}
 		}
-    }
 
+        function sendToDatabase($moco_project_name, $customs , $leader, $moco_id, $identifier, $moco_active, $customer_name) {
+            $exists = true;
+            $sql = rex_sql::factory();
+            $dbData = $sql->setQuery('SELECT * from rex_synchronisation');
+            $dbData = $dbData->getArray();
+            foreach($dbData as $db) {
+                if($db['identifier'] == $identifier) {
+                    $exists = true;
+                    break;
+                }
+                else {
+                    $exists = false;
+                }
+            }
+
+            if($exists == false) {
+                $sql = rex_sql::factory();
+                $sql->setQuery('INSERT INTO rex_synchronisation (`identifier`,`name`,`info`,`active`,`Status`,`customer`,`user_id`,`moco_id`,`Intern`) VALUES("'.$identifier.'","'.$moco_project_name.'","'.$info.'","'.$moco_active.'","'.$customs["Status"].'","'.$customer_name["name"].'","'.$leader["id"].'","'.$moco_id.'","'.$customs["Intern"].'")');
+            }
+        }
+    }
 ?>

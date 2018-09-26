@@ -16,10 +16,20 @@ if (rex_post('formsubmit', 'string') == '1' && !$csrfToken->isValid()) {
         ['trello_token', 'string'],
     ]));
     $this->setConfig(rex_post('config', [
+        ['trello_key_co', 'string'],
+    ]));
+    $this->setConfig(rex_post('config', [
+        ['trello_token_co', 'string'],
+    ]));
+
+    $this->setConfig(rex_post('config', [
         ['esperantoBoard', 'string'],
     ]));
     $this->setConfig(rex_post('config', [
         ['regelBoard', 'string'],
+    ]));
+    $this->setConfig(rex_post('config', [
+        ['syncOK', 'string'],
     ]));
 }
 
@@ -41,6 +51,28 @@ $formElements = [];
 $n = [];
 $n['label'] = '<label for="trello_token">Trello-API-Token</label>';
 $n['field'] = '<input class="form-control" type="text" id="trello_token" name="config[trello_token]" value="' . $this->getConfig('trello_token') . '"/>';
+$formElements[] = $n;
+
+$fragment = new rex_fragment();
+$fragment->setVar('elements', $formElements, false);
+$content .= $fragment->parse('core/form/container.php');
+
+// Trello-Key-co
+$formElements = [];
+$n = [];
+$n['label'] = '<label for="trello_key_co">Trello-API-Key-Co-Worker</label>';
+$n['field'] = '<input class="form-control" type="text" id="trello_key_co" name="config[trello_key_co]" value="' . $this->getConfig('trello_key_co') . '"/>';
+$formElements[] = $n;
+
+$fragment = new rex_fragment();
+$fragment->setVar('elements', $formElements, false);
+$content .= $fragment->parse('core/form/container.php');
+
+// Trello-Token-co
+$formElements = [];
+$n = [];
+$n['label'] = '<label for="trello_token_co">Trello-API-Token-Co-Worker</label>';
+$n['field'] = '<input class="form-control" type="text" id="trello_token_co" name="config[trello_token_co]" value="' . $this->getConfig('trello_token_co') . '"/>';
 $formElements[] = $n;
 
 $fragment = new rex_fragment();
@@ -69,6 +101,16 @@ $fragment = new rex_fragment();
 $fragment->setVar('elements', $formElements, false);
 $content .= $fragment->parse('core/form/container.php');
 
+// SyncOK-ID
+$formElements = [];
+$n = [];
+$n['label'] = '<label for="syncOK">SyncOK-Label-ID</label>';
+$n['field'] = '<input class="form-control" type="text" id="syncOK" name="config[syncOK]" value="' . $this->getConfig('syncOK') . '"/>';
+$formElements[] = $n;
+
+$fragment = new rex_fragment();
+$fragment->setVar('elements', $formElements, false);
+$content .= $fragment->parse('core/form/container.php');
 //save
 $formElements = [];
 $n = [];
