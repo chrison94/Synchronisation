@@ -81,13 +81,7 @@
     	}
 
     	function updateStatusInMoco($changeMocoDataID,$listAfter,$mocoData) {
-<<<<<<< HEAD
     		$send ='custom_properties[Status]='.$listAfter;
-=======
-            $intern = rawurlencode($mocoData['Intern']);
-    		$send ='custom_properties[Status]='.$listAfter.'&custom_properties[Intern]='.$intern;
-
->>>>>>> 5e4b9a086dfcb70271b886adb445d1c3d59d2935
     		$urlpM =  'https://'.$this->sitename.'.mocoapp.com/api/v1/projects/'.$changeMocoDataID;
             $sql = rex_sql::factory();
             $sql->setQuery('UPDATE rex_synchronisation SET Status = "'.$listAfter.'" WHERE  moco_id = "'.$changeMocoDataID.'"');

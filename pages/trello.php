@@ -101,7 +101,7 @@ $fragment = new rex_fragment();
 $fragment->setVar('elements', $formElements, false);
 $content .= $fragment->parse('core/form/container.php');
 
-// SyncOK-ID
+/* SyncOK-ID
 $formElements = [];
 $n = [];
 $n['label'] = '<label for="syncOK">SyncOK-Label-ID</label>';
@@ -110,7 +110,7 @@ $formElements[] = $n;
 
 $fragment = new rex_fragment();
 $fragment->setVar('elements', $formElements, false);
-$content .= $fragment->parse('core/form/container.php');
+$content .= $fragment->parse('core/form/container.php'); */
 //save
 $formElements = [];
 $n = [];

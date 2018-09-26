@@ -1,4 +1,3 @@
-
 ## Konfiguration der WebHooks
 
 ### MOCO-Software
@@ -6,6 +5,7 @@
 Webhook erstellen für:
     - Create Project
     - Update Project
+    - Create Contacts
     
 Die URL entspricht dem Modul/Template, worin sich folgender Code befindet: 
 
@@ -14,8 +14,17 @@ Die URL entspricht dem Modul/Template, worin sich folgender Code befindet:
 header("HTTP/1.1 200 OK");
 $addon = rex_addon::get('MocoTrello');
 $addonsPath = rex_path::src('addons');
+$webhookType = json_decode(file_get_contents("php://input"),TRUE);
+$webhookType = $webhookType['type'];
 
-include_once $addonsPath.'/MocoTrello/vendor/Schnittstelle/webhook_moco.php';
+if($webhookType == 'customer') {
+  include_once $addonsPath.'/MocoTrello/vendor/Schnittstelle/createUserWebhook.php';
+
+}
+else {
+  include_once $addonsPath.'/MocoTrello/vendor/Schnittstelle/webhook_moco.php';
+}
+?>
 ```
 
 
@@ -53,4 +62,3 @@ in dem REDAXO hier wäre dies das Template webhook und die URL https://ch-g.net/
 #### Synchronisation
     - Die Knöpfe erklären sich eigentlich von selbst, Kunden synchronisiert die Kunden von Moco->Trello (mit meinem API-Key nicht, da ich kein Zugriff drauf habe, musst du deinen eintragen :-)), Webhook erstellt den Webhook
     - Unten in dem Block kannst du die WebHooks konfigurieren. Da trägst du die ID des Board ein (Esperanto/Normales) und dann die Adresse, an die der Webhook gesendet werden soll (siehe Modul/Template für Trello). Daraufhin klickst du auf Speichern und erst danach auf den Knopf Webhook
-
