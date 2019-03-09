@@ -28,7 +28,6 @@ else {
 ```
 
 
-in dem REDAXO hier wäre dies das Template webhook_moco und die URL https://ch-g.net/index.php?article_id=1
 
 ### Modul/Template für Trello
 Die URL für den Trello-WebHook entspricht dem Modul/Template, worin sich folgender Code befindet: 
@@ -42,7 +41,6 @@ $addonsPath = rex_path::src('addons');
 include_once $addonsPath.'/MocoTrello/vendor/Schnittstelle/webhook.php';
 ```
 
-in dem REDAXO hier wäre dies das Template webhook und die URL https://ch-g.net/index.php?article_id=3
 
 ### Konfiguration des Add-On
 
